@@ -1,0 +1,138 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #212121 !important;
+    margin: 0;
+    padding: 0;
+    color:whitesmoke !important;
+}
+
+form {
+    background: radial-gradient(#131a04, #024c029b);
+    padding: 2em 5em;
+    border: 2px solid rgba(7, 122, 32, 0.939);
+    box-shadow: 0 10px 20px rgba(237, 5, 36, 0.71);
+}
+
+form:hover{
+    box-shadow: 10px 20px 30px rgba(237, 5, 36, 0.71);
+}
+/* .profile-container {
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+} */
+/* --------------------------------------------------------------------------------- */
+
+.heading{
+    font-size: larger;
+    font-weight: bolder;
+}
+
+#github-form {
+    max-width: 800px;
+    margin: auto;
+}
+
+.rounded {
+    border-radius: 50%;
+}
+
+#username {
+    width: 100%;
+    margin: 10px 0;
+}
+
+#btn{
+    margin-top: 20px;
+    padding: 5px 20px;
+    font-weight: bold;
+}
+
+.user-info {
+    text-align: center;
+    font-size: larger;
+    margin-bottom: 5em;
+}
+
+#profile_pic {
+    width: 250px;
+    height: 250px;
+}
+
+#github-link {
+    display: block;
+    margin-top: 20px;
+}
+
+/* --------------------------------------------------------------------------------- */
+
+.repositories-container {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    overflow-wrap: break-word;
+    justify-content: center;
+    gap: 30px;
+    color:#212121;
+}
+
+.repository-box {
+    background-color: #eaeaea;
+    padding: 15px;
+    border-radius: 5px;
+    width: 200px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.repository-box:hover {
+    transform: scale(1.1);
+}
+/* ------------------------------------------------------------------------------- */
+#card {
+    margin: 10em;
+    padding: 3em;
+    transition: all 0.2s;
+    position: relative;
+    cursor: pointer;
+}
+  
+.card-inner {
+  width: inherit;
+  height: inherit;
+  padding: 3em;
+  background: rgba(255,255,255,.05);
+  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+}
+
+.circle {
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(#b0e633, #53ef7d);
+  border-radius: 50%;
+  position: absolute;
+  animation: move-up 2s ease-in infinite alternate-reverse;
+}
+
+.circle:nth-child(1) {
+  top: -10px;
+  left: -10px;
+}
+
+.circle:nth-child(2) {
+  bottom: -10px;
+  right: -10px;
+  animation-name: move-down;
+}
+
+@keyframes move-up {
+  to {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes move-down {
+  to {
+    transform: translateY(20px);
+  }
+}
