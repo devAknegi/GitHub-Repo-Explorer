@@ -34,16 +34,36 @@ document.addEventListener('DOMContentLoaded', function () {
                     const repositoriesContainer = document.getElementById('repositories-container');
                     repositoriesContainer.innerHTML = '';
 
+                    const repositoriesGrid = document.createElement('div');
+                    repositoriesGrid.classList.add('repositories-grid');
+
                     repositories.forEach(repo => {
                         const repoBox = document.createElement('div');
                         repoBox.classList.add('repository-box');
+
                         repoBox.innerHTML = `
-                            <h1>${repo.name}</h1>
+                            <h3>${repo.name}</h3>
                             <p>${repo.description || 'No description available.'}</p>
-                            <a href="${repo.html_url}" target="_blank">View on GitHub</a>
+
+                            <div class="tech-stack"></div>
                         `;
-                        repositoriesContainer.appendChild(repoBox);
+                        // <a href="${repo.html_url}" target="_blank">View on GitHub</a>
+
+                        fetch(repo.languages_url)
+                        .then(response => response.json())
+                        .then(languages => {
+                            const techStackContainer = repoBox.querySelector('.tech-stack');
+
+                            Object.keys(languages).forEach(language => {
+                                const techStackBox = document.createElement('div');
+                                techStackBox.classList.add('tech-stack-box');
+                                techStackBox.innerText = language;
+                                techStackContainer.appendChild(techStackBox);
+                            });
+                        });
+                        repositoriesGrid.appendChild(repoBox);
                     });
+                    repositoriesContainer.appendChild(repositoriesGrid);
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error);
