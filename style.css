@@ -6,39 +6,22 @@ body {
     color:whitesmoke !important;
 }
 
-form {
+#form {
     background: radial-gradient(#131a04, #024c029b);
     padding: 2em 5em;
+    margin: auto auto 10em auto !important;
     border: 2px solid rgba(7, 122, 32, 0.939);
     box-shadow: 0 10px 20px rgba(237, 5, 36, 0.71);
+    max-width: 800px;
 }
 
-form:hover{
+#form:hover{
     box-shadow: 10px 20px 30px rgba(237, 5, 36, 0.71);
 }
-/* .profile-container {
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-} */
-/* --------------------------------------------------------------------------------- */
 
 .heading{
     font-size: larger;
     font-weight: bolder;
-}
-
-#github-form {
-    max-width: 800px;
-    margin: auto;
-}
-
-.rounded {
-    border-radius: 50%;
-}
-
-#username {
-    width: 100%;
-    margin: 10px 0;
 }
 
 #btn{
@@ -47,15 +30,88 @@ form:hover{
     font-weight: bold;
 }
 
+/* ------------------------------------------------------------------------------------------------------*/
+
+#card {
+    margin: 10em;
+    padding: 3em;
+    transition: all 0.2s;
+    position: relative;
+    cursor: pointer;
+}
+
+#card:hover{
+    box-shadow: 10px 20px 30px rgba(113, 237, 5, 0.71);
+}
+  
+.card-inner {
+  width: inherit;
+  height: inherit;
+  padding: 3em;
+  background: rgba(255,255,255,.05);
+  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+}
+
+.circle {
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(#b0e633, #53ef7d);
+  border-radius: 50%;
+  position: absolute;
+  animation: move-upleft 2s ease-in infinite alternate-reverse;
+}
+
+.circle:nth-child(1) {
+  top: -10px;
+  left: -10px;
+}
+
+.circle:nth-child(2) {
+  bottom: -10px;
+  right: -10px;
+  animation-name: move-downlright;
+}
+
+@keyframes move-upleft {
+  to {
+    transform: translateX(-30px) translateY(-30px);
+
+  }
+}
+
+@keyframes move-downlright {
+  to {
+    transform: translateX(30px) translateY(30px);
+  }
+}
+
+/* ------------------------------------------------------------------------------------------------------*/
+
 .user-info {
-    text-align: center;
-    font-size: larger;
     margin-bottom: 5em;
+    padding-bottom: 30px;
+    text-align: center;
+    border-bottom: 0.5px solid #18ff08e3;
 }
 
 #profile_pic {
     width: 250px;
     height: 250px;
+    box-shadow: 0px 0px 50px rgba(51, 237, 5, 0.71);
+    margin-bottom: 4em;
+}
+.rounded {
+    border-radius: 50%;
+}
+
+/* #user_username{
+   
+} */
+
+#name {
+    font-weight: bolder;
 }
 
 #link {
@@ -63,7 +119,7 @@ form:hover{
     margin-top: 20px;
 }
 
-/* --------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------*/
 
 .repositories-container {
     margin-top: 30px;
@@ -86,53 +142,107 @@ form:hover{
 .repository-box:hover {
     transform: scale(1.1);
 }
-/* ------------------------------------------------------------------------------- */
-#card {
-    margin: 10em;
-    padding: 3em;
-    transition: all 0.2s;
+
+/* ------------------------------------------------------------------------------------------------------*/
+
+.loader {
+    display: none;
+    --var-size: 2.8rem;
+    --var-speed: .9s;
+    --var-color: #19ff08;
     position: relative;
-    cursor: pointer;
-}
-  
-.card-inner {
-  width: inherit;
-  height: inherit;
-  padding: 3em;
-  background: rgba(255,255,255,.05);
-  box-shadow: 0 0 10px rgba(0,0,0,0.25);
-  backdrop-filter: blur(10px);
-  border-radius: 8px;
+    margin-top: 20px; 
+    height: var(--var-size); 
+    width: var(--var-size);
 }
 
-.circle {
-  width: 150px;
-  height: 150px;
-  background: radial-gradient(#b0e633, #53ef7d);
-  border-radius: 50%;
-  position: absolute;
-  animation: move-up 2s ease-in infinite alternate-reverse;
+.dot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    width: 100%;
 }
 
-.circle:nth-child(1) {
-  top: -10px;
-  left: -10px;
+.dot::before {
+    content: '';
+    height: 20%;
+    width: 20%;
+    border-radius: 50%;
+    background-color: var(--var-color);
+    transform: scale(0);
+    opacity: 0.5;
+    animation: buffer calc(var(--var-speed) * 1.111) ease-in-out infinite;
+    box-shadow: 0 0 20px rgba(18, 31, 53, 0.3);
 }
 
-.circle:nth-child(2) {
-  bottom: -10px;
-  right: -10px;
-  animation-name: move-down;
+.dot:nth-child(2) {
+    transform: rotate(45deg);
 }
 
-@keyframes move-up {
-  to {
-    transform: translateY(-20px);
-  }
+.dot:nth-child(2)::before {
+    animation-delay: calc(var(--var-speed) * -0.875);
 }
 
-@keyframes move-down {
-  to {
-    transform: translateY(20px);
-  }
+.dot:nth-child(3) {
+    transform: rotate(90deg);
+}
+
+.dot:nth-child(3)::before {
+    animation-delay: calc(var(--var-speed) * -0.75);
+}
+
+.dot:nth-child(4) {
+    transform: rotate(135deg);
+}
+
+.dot:nth-child(4)::before {
+    animation-delay: calc(var(--var-speed) * -0.625);
+}
+
+.dot:nth-child(5) {
+    transform: rotate(180deg);
+}
+
+.dot:nth-child(5)::before {
+    animation-delay: calc(var(--var-speed) * -0.5);
+}
+
+.dot:nth-child(6) {
+    transform: rotate(225deg);
+}
+
+.dot:nth-child(6)::before {
+    animation-delay: calc(var(--var-speed) * -0.375);
+}
+
+.dot:nth-child(7) {
+    transform: rotate(270deg);
+}
+
+.dot:nth-child(7)::before {
+    animation-delay: calc(var(--var-speed) * -0.25);
+}
+
+.dot:nth-child(8) {
+    transform: rotate(315deg);
+}
+
+.dot:nth-child(8)::before {
+    animation-delay: calc(var(--var-speed) * -0.125);
+}
+
+@keyframes buffer {
+    0%,
+    100% {
+      transform: scale(0);
+      opacity: 0.5;
+    }   
+    50% {
+      transform: scale(1);
+      opacity: 1;
+    }
 }

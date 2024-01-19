@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const githubForm = document.getElementById('github-form');
+    const githubForm = document.getElementById('form');
     const usernameInput = document.getElementById('username');
-
+    const loader = document.getElementById('loader');
     githubForm.addEventListener('submit', function(event){
         event.preventDefault();
         const profile = document.querySelector('.profile');
@@ -11,20 +11,23 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         else{
             usernameInput.setCustomValidity('');
+            
+            loader.style.display = 'block';
 
             fetch(`https://api.github.com/users/${username}`)
                 .then(response => response.json())
                 .then(user => {
-                    document.getElementById('profile_pic').src = user.avatar_url;
-                    document.getElementById('username').innerText = user.login;
-                    document.getElementById('name').innerText = user.name || '';
-                    document.getElementById('bio').innerText = user.bio || '';
-                    document.getElementById('location').innerText = user.location || '';
-                    document.getElementById('link').href = user.html_url;
-
-                    profile.classList.remove('d-none');
-                    profile.scrollIntoView({behavior:'smooth'});
-                    return fetch(`https://api.github.com/users/${username}/repos`);
+                        loader.style.display = 'none';
+                        document.getElementById('profile_pic').src = user.avatar_url;
+                        document.getElementById('user_username').innerText = user.login;
+                        document.getElementById('name').innerText = user.name || '';
+                        document.getElementById('bio').innerText = user.bio || '';
+                        document.getElementById('location').innerText = user.location || '';
+                        document.getElementById('link').href = user.html_url;
+    
+                        profile.classList.remove('d-none');
+                        profile.scrollIntoView({behavior:'smooth'});
+                        return fetch(`https://api.github.com/users/${username}/repos`);
                 })
                 .then(response => response.json())
                 .then(repositories => {
@@ -35,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         const repoBox = document.createElement('div');
                         repoBox.classList.add('repository-box');
                         repoBox.innerHTML = `
-                            <h3>${repo.name}</h3>
+                            <h1>${repo.name}</h1>
                             <p>${repo.description || 'No description available.'}</p>
                             <a href="${repo.html_url}" target="_blank">View on GitHub</a>
                         `;
@@ -44,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error);
+                    loader.style.display = 'none';
                     profile.classList.add('d-none');
                 });
             githubForm.classList.add('was-validated');
