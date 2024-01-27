@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Github Repositories Listing Page </title>
+    <title>Github Repo. Listing Page </title>
 </head>
 <body>
     <div class="main mt-5"></div>
@@ -39,10 +39,10 @@
                     <h3 id="user_username"></h3>
                     <p id="bio"></p>
                     <p id="location"></p>
-                    <a id="link" href="" target="_blank">Visit Github Profile</a>
+                    <a id="link" href="" target="_blank">Github Profile</a>
                 </div>
                 <div class="view">
-                    <label for="per-page-select">Repositories per page:</label>
+                    <label for="per-page-select">Repos. per page:</label>
                     <select id="per-page-select">
                         <option value="5" selected>5</option>
                         <option value="10">10</option>
@@ -53,12 +53,7 @@
                 </div>
                 <div>
                     <div class="repositories-container mt-4" id="repositories-container"></div>
-
-                    <nav class="pagination-container">
-                        <button class="pagination-button" id="prev-button" title="Previous page" aria-label="Previous page"> &lt;&lt; </button>
-                        <div id="pagination-numbers"></div>
-                        <button class="pagination-button" id="next-button" title="Next page" aria-label="Next page"> &gt;&gt; </button>
-                    </nav>
+                    <div id="pagination-container"></div>
                 </div>
             </div>
         </div>

@@ -6,8 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // -----------------------------------------------------------------------
   let perPage;
+  const initialPage = 1;
   // ------------------------------------------------------------------------
-  
   perPageSelect.addEventListener("change", function () {
     githubForm.dispatchEvent(new Event("submit"));
   });
@@ -25,17 +25,16 @@ document.addEventListener("DOMContentLoaded", function () {
       usernameInput.setCustomValidity("");
       loader.style.display = "block";
 
-      fetchUserData(username, perPage);
+      fetchUserData(username, perPage, initialPage);
     } 
     githubForm.classList.add("was-validated");
   });
-   
-  const fetchUserData = (username, perPage) => {
-    const profile = document.querySelector(".profile");
-    const repositoriesGrid = document.createElement("div");
-    repositoriesGrid.classList.add("repositories-grid");
-    const repositoriesContainer = document.getElementById("repositories-container");
 
+//----------------------------------------------------------------------------------------------   
+  function fetchUserData(username, perPage, page) {
+    const profile = document.querySelector(".profile");
+    const repositoriesContainer = document.getElementById("repositories-container");
+    
     fetch(`https://api.github.com/users/${username}`)
       .then((response) => {
         if (!response.ok) {
@@ -55,19 +54,29 @@ document.addEventListener("DOMContentLoaded", function () {
         profile.classList.remove("d-none");
         profile.scrollIntoView({ behavior: "smooth" });
   
-        return fetch(`https://api.github.com/users/${username}/repos?per_page=${perPage}`);
+        return fetch(`https://api.github.com/users/${username}/repos?per_page=${perPage}&page=${page}`);
       })
       .then((reposResponse) => {
         if (!reposResponse.ok) {
           throw new Error('Failed to fetch repositories');
         }
+
+        const linkHeader = reposResponse.headers.get('Link');
+        const totalPages = pageHeader(linkHeader);
+        pagination(username, perPage, totalPages);
+
         return reposResponse.json();
       })
       .then((repos) => {
         repositoriesContainer.innerHTML = "";
+
+        const repositoriesGrid = document.createElement('div');
+        repositoriesGrid.classList.add('repositories-grid');
+
         repos.forEach((repo) => {
           const repoBox = document.createElement("div");
           repoBox.classList.add("repository-box");
+
           repoBox.innerHTML = `
             <h3>${repo.name}</h3>
             <p>${repo.description || "No description available."}</p>
@@ -77,7 +86,6 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((response) => response.json())
             .then((languages) => {
               const techStackContainer = repoBox.querySelector(".tech-stack");
-
               Object.keys(languages).forEach((language) => {
                 const techStackBox = document.createElement("div");
                 techStackBox.classList.add("tech-stack-box");
@@ -85,14 +93,43 @@ document.addEventListener("DOMContentLoaded", function () {
                 techStackContainer.appendChild(techStackBox);
               });
             });
-          repositoriesContainer.appendChild(repoBox);
-        });
-        
+            repositoriesGrid.appendChild(repoBox);
+          });
+          repositoriesContainer.appendChild(repositoriesGrid);
       })
       .catch((e) => {
         console.error("Error:", e);
         loader.style.display = "none";
         profile.classList.add("d-none");
       });
+  };
+
+  const pageHeader = (linkHeader) => {
+    if (!linkHeader) {
+      return 1;
+    }
+    const matches = linkHeader.match(/&page=(\d+)[^>]*>; rel="last"/);
+    if (matches && matches[1]) {
+      return parseInt(matches[1]);
+    }  
+    return 1;
+  };
+
+  function pagination(username, perPage, totalPages){
+    const paginationContainer = document.getElementById("pagination-container");
+    if (!paginationContainer) {
+      console.error("Pagination container not found.");
+      return;
+    }
+    paginationContainer.innerHTML = "";
+    for (let i = 1; i <= totalPages; i++) {
+      const pageDiv = document.createElement("div");
+      pageDiv.classList.add("page-number");
+      pageDiv.innerText = i;
+      pageDiv.addEventListener("click", () => {
+        fetchUserData(username, perPage, i);
+      });
+      paginationContainer.appendChild(pageDiv);
+    }
   };
 });
