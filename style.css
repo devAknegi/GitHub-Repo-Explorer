@@ -326,3 +326,23 @@ body {
         padding: 5px;
     }
 }
+
+/* ------------------------------------------------------------------ */
+
+.error-message{
+    color: red;
+    padding-top: 10px;
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+  
+::-webkit-scrollbar-track {
+    border-radius: 5px;
+}
+  
+::-webkit-scrollbar-thumb {
+    background: #06e959;
+    border-radius: 5px;
+}

@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const githubForm = document.getElementById("form");
   const usernameInput = document.getElementById("username");
+  const errorMessage = document.getElementById("error-message");
   const loader = document.getElementById("loader");
   const perPageSelect = document.getElementById("per-page-select");
 
@@ -17,28 +18,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const username = usernameInput.value.trim();
     perPage = perPageSelect.value;
-
+    
     if (!username) {
-      usernameInput.setCustomValidity("Please fill in the Github Username");
+      usernameInput.setCustomValidity("Please enter the Username first !!!"); 
+      return;
     } 
-    else {
-      usernameInput.setCustomValidity("");
-      loader.style.display = "block";
+    usernameInput.setCustomValidity("");
+    loader.style.display = "block";
 
-      fetchUserData(username, perPage, initialPage);
-    } 
-    githubForm.classList.add("was-validated");
+    fetchUserData(username, perPage, initialPage);
+    githubForm.classList.add('was-validated');
   });
 
 //----------------------------------------------------------------------------------------------   
   function fetchUserData(username, perPage, page) {
     const profile = document.querySelector(".profile");
     const repositoriesContainer = document.getElementById("repositories-container");
-    
     fetch(`https://api.github.com/users/${username}`)
       .then((response) => {
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+
+          errorMessage.innerHTML = "";
+          errorMessage.textContent = "Username not found on GitHub Database!!!";
+          errorMessage.classList.add("error-message");
+          throw new Error(`User not found (${response.status})`);
+        }
+        else{
+          errorMessage.innerHTML = "";
+          errorMessage.classList.remove("error-message");
         }
         return response.json();
       })
@@ -82,6 +89,11 @@ document.addEventListener("DOMContentLoaded", function () {
             <p>${repo.description || "No description available."}</p>
             <div class="tech-stack"></div>
           `;
+
+          repoBox.addEventListener("click", () => {
+            window.location.href = repo.html_url;
+          });
+          
           fetch(repo.languages_url)
             .then((response) => response.json())
             .then((languages) => {
